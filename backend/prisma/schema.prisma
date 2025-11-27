@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Department {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  members     Member[]
+  description String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
+model Member {
+  id            String       @id @default(cuid())
+  firstname     String
+  lastname      String
+  other_names   String?
+  department_id String?
+  department    Department?  @relation(fields: [department_id], references: [id])
+  memberType    memberType
+  isHead        Boolean      @default(false)
+  // attendance_id
+  phone         String       @unique
+  address       String
+  // role          Role         @default(member)
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @updatedAt
+  attendances   Attendance[]
+  gender        gender
+
+  @@index([phone])
+}
+
+// model Guest {
+//   id          String       @id @default(cuid())
+//   firstname   String
+//   lastname    String
+//   other_names String?
+//   memberType  memberType
+//   // attendance_id
+//   phone       String       @unique
+//   address     String
+//   created_at  DateTime     @default(now())
+//   updated_at  DateTime     @updatedAt
+//   attendances Attendance[]
+
+//   @@index([phone])
+// }
+
+model Attendance {
+  id                String           @id @default(cuid())
+  member_phone      String?
+  member            Member?          @relation(fields: [member_phone], references: [phone])
+  service_id        String?
+  service           Service?         @relation(fields: [service_id], references: [id])
+  event_id          String?
+  event             Event?           @relation(fields: [event_id], references: [id])
+  address           String
+  firstname         String
+  lastname          String
+  phone             String
+  memberType        String
+  attendance_status attendanceStatus @default(absent)
+  date              DateTime         @default(now())
+  time              DateTime         @default(now())
+  created_at        DateTime         @default(now())
+
+  @@index([service_id, time])
+  @@index([event_id, time])
+}
+
+model Service {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  dayOfWeek   String
+  startTime   String
+  endTime     String
+  attendances Attendance[]
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+}
+
+model Event {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  date        DateTime
+  endDate     DateTime?
+  startTime   String
+  endTime     String
+  attendances Attendance[]
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+}
+
+enum memberType {
+  regular
+  visitor
+}
+
+enum gender {
+  male
+  female
+}
+
+enum attendanceStatus {
+  absent
+  present
+}
