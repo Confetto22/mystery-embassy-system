@@ -84,6 +84,10 @@ export const singleMemberService = async ({ id }) => {
     where: {
       id,
     },
+    include: {
+      // attendances: true,
+      department: true,
+    },
   });
   if (!member) {
     throw new Error("member does not exist!");

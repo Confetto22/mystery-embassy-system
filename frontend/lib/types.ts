@@ -25,12 +25,20 @@ export interface Event {
   updated_at: string;
   attendances: Attendance[];
 }
-
+export interface Service {
+  id: string;
+  name: string;
+  dayOfWeek: string;
+  startTime: string;
+  endTime: string;
+  attendances: Attendance[];
+}
 export interface GenderCount {
   _count: {
     id: number;
   };
   gender: string;
+  color: string;
 }
 
 export interface Department {
@@ -54,6 +62,8 @@ export interface AnalyticsData {
   genders: GenderCount[];
   deptPopulation: Department[];
   absentToday: Member[];
+  todayEvent: Event[];
+  todayService: Service[];
 }
 
 export interface Attendance {

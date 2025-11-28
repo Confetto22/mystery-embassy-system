@@ -7,9 +7,36 @@ export const analyticsService = async () => {
 
   const endOfDay = new Date();
   endOfDay.setHours(23, 59, 59, 9999);
+  let dayOfWeek = new Date().getDay();
+  switch (dayOfWeek) {
+    case 0:
+      dayOfWeek = "sunday";
+      break;
+    case 1:
+      dayOfWeek = "monday";
+      break;
+    case 2:
+      dayOfWeek = "tuesday";
+      break;
+    case 3:
+      dayOfWeek = "wednesday";
+      break;
+    case 4:
+      dayOfWeek = "thursday";
+      break;
+    case 5:
+      dayOfWeek = "friday";
+      break;
+    case 6:
+      dayOfWeek = "saturday";
+      break;
+  }
+  // console.log(dayOfWeek);
 
   const [
     totalMembers,
+    todayEvent,
+    todayService,
     // newMembers,
     firstTimers,
     upcomingEvts,
@@ -18,6 +45,21 @@ export const analyticsService = async () => {
     deptPopulation,
   ] = await Promise.all([
     prisma.member.findMany({ where: { memberType: "regular" } }),
+    prisma.event.findMany({
+      where: {
+        date: {
+          gte: startOfDay,
+          lte: endOfDay,
+        },
+      },
+    }),
+    prisma.service.findMany({
+      where: {
+        dayOfWeek: dayOfWeek,
+      },
+      include: { attendances: true },
+    }),
+
     prisma.member.findMany({ where: { memberType: "visitor" } }),
     prisma.event.findMany({
       where: { date: getUpcomingRange(30) },
@@ -61,6 +103,8 @@ export const analyticsService = async () => {
 
   return {
     totalMembers,
+    todayEvent,
+    todayService,
     firstTimers,
     upcomingEvts,
     presentToday,

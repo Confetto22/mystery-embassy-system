@@ -46,7 +46,7 @@ export const addEventService = async (eventData) => {
 
 export const allEventsService = async () => {
   const events = await prisma.event.findMany({
-    include: { attendances: true },
+    include: { _count: { select: { attendances: true } } },
     orderBy: { date: "asc" },
   });
 

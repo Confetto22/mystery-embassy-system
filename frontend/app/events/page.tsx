@@ -1,23 +1,46 @@
-"use client";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
+import { EntityDataTable } from "@/components/entity-data-table";
+import { columns } from "./columns";
+import { fetchEvents } from "../actions/events.action";
 
-export default function EventsPage() {
+export default async function EventsPage() {
+  const { data: events, isLoading, isError } = await fetchEvents();
   return (
     <main className="flex flex-1 flex-col gap-6 p-6 bg-gray-50 min-h-screen">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold text-gray-900">Events</h1>
-        <p className="text-gray-600">Manage church events and activities</p>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/dashboard">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Events</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
       </div>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle>Events</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>Events page content will be implemented here.</p>
-        </CardContent>
-      </Card>
+
+      <EntityDataTable
+        columns={columns}
+        data={events}
+        filterColumn="name"
+        filterPlaceholder="Filter by name..."
+        isLoading={isLoading}
+        endpoint="/events"
+      />
     </main>
   );
 }
