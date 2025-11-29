@@ -1,17 +1,28 @@
 export interface Member {
-  id: string;
+  id?: string;
   firstname: string;
   lastname: string;
   other_names: string;
-  department_id: string | null;
+  department_id?: string | null;
   memberType: string;
   isHead: boolean;
   phone: string;
   address: string;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
   gender: string;
-  department: Department;
+  department?: Department;
+}
+export interface CreateMemberData {
+  firstname: string;
+  lastname: string;
+  other_names: string;
+  phone: string;
+  address: string;
+  gender: string;
+  memberType: string;
+  department_id?: string | null;
+  isHead: boolean;
 }
 
 export interface Event {

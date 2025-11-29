@@ -78,14 +78,15 @@ export const columns: ColumnDef<Member>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem asChild>
+              <a href={`/members/${member.id}`}>View Member</a>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(member.id)}
             >
-              Copy payment ID
+              Copy Member ID
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

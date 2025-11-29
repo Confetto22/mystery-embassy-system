@@ -12,53 +12,34 @@ import { fetchDepartments } from "../actions/departments.action";
 import { columns } from "./columns";
 import { EntityDataTable } from "@/components/entity-data-table";
 
+import { DepartmentsPageClient } from "./departments-page-client";
+
 const DepartmentsPage = async () => {
   const { data: departments, isLoading, isError } = await fetchDepartments({});
-  // const [departments, setDepartments] = useState<Department[]>([]);
-  // const [isLoading, setIsLoading] = useState(true);
-
-  // useEffect(() => {
-  //   let isMounted = true;
-
-  //   const getDepartments = async () => {
-  //     try {
-  //       setIsLoading(true);
-  //       const res = await fetchDepartments({});
-  //       if (!isMounted) {
-  //         return;
-  //       }
-  //       setDepartments(res.data);
-  //     } finally {
-  //       if (isMounted) {
-  //         setIsLoading(false);
-  //       }
-  //     }
-  //   };
-  //   getDepartments();
-
-  //   return () => {
-  //     isMounted = false;
-  //   };
-  // }, []);
 
   return (
     <main className="flex flex-1 flex-col gap-6 p-6 bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold text-gray-900">Departments</h1>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/dashboard">Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Departments</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Departments</h1>
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href="/dashboard">Home</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Departments</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+          <DepartmentsPageClient />
+        </div>
       </div>
 
       <EntityDataTable

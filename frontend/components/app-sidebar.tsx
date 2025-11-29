@@ -63,9 +63,9 @@ export function AppSidebar() {
       refLink: "/attendance",
     },
     {
-      title: "Record Attendance",
+      title: "Attendance History",
       icon: ClipboardCheck,
-      refLink: "/attendance/record",
+      refLink: "/attendance/history",
     },
     {
       title: "Settings",
